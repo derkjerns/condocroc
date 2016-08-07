@@ -9,8 +9,14 @@
     font-weight: bold;
 }
 
-.listing-url{
+.listing-url a{
     color: forestgreen;
+    text-decoration: none;
+}
+
+.listing-url a:hover{
+    color: forestgreen;
+    text-decoration: none;
 }
 
 .listing-description{

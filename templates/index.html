@@ -5,7 +5,7 @@
   {% for listing in listings %}
       <div class="listing">
           <div class="listing-title">{{ listing.title }}</div>
-          <div class="listing-url">{{ listing.url }}</div>
+          <div class="listing-url"><a href="{{ listing.url }}">{{ listing.url }}</a></div>
           <div class="listing-description">{{ listing.description }}</div>
           <div class="listing-date">{{ listing.date }}</div>
       </div>
