@@ -1,0 +1,22 @@
+.listing{
+    font-size:18px;
+    display: block;
+    padding: 14px;
+}
+
+.listing-title{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.listing-url{
+    color: forestgreen;
+}
+
+.listing-description{
+
+}
+
+.listing-date{
+
+}
