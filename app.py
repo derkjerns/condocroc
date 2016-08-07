@@ -1,13 +1,17 @@
 import os
 from flask import Flask, render_template, send_from_directory
+from flask_sqlalchemy import SQLAlchemy
+
+print(os.environ['APP_SETTINGS'])
 
 # initialization
 app = Flask(__name__)
-app.config.update(
-    DEBUG = True,
-)
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# controllers
+from models import *
+
 # controllers
 @app.route('/favicon.ico')
 def favicon():
