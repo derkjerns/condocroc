@@ -26,13 +26,6 @@
         <a class="navbar-brand" href="/"><img src="/static/img/condocroc_logo.png" width="200px" height="auto" alt="condocroc_logo"></a>
         <div class="nav-collapse">
           {% block navbar_right %}
-          <ul class="nav navbar-nav pull-right">
-            {% if not session.logged_in %}
-              <li><a href="#">Login or Signup</a></li>
-            {% else %}
-              <li><a href="#">Logout</a></li>
-            {% endif %}
-          </ul>
           {% endblock %}
         </div><!--/.nav-collapse -->
       </div>
@@ -46,7 +39,7 @@
         <hr>
         {% block footer %}
         <footer class="footer">
-            <p>&copy; CondoCroc</p>
+            <p>CondoCroc &copy; {{ year }}</p>
         </footer>
         {% endblock %}
     </div>

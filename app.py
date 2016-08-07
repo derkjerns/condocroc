@@ -2,12 +2,20 @@ import os
 from flask import Flask, render_template, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import abort
+import datetime as datetime
 
 # initialization
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+
+@app.context_processor
+def inject_current_year():
+    year = datetime.datetime.now().year
+    return dict(year=year)
+
 
 from models import *
 
@@ -21,6 +29,7 @@ def favicon():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 @app.errorhandler(405)
 @app.errorhandler(401)
@@ -40,7 +49,7 @@ def addCraigslistListing():
     if request.method == 'POST':
         try:
             json = request.get_json()
-            listing = Listing(json['title'],json['url'],json['description'],json['date'])
+            listing = Listing(json['title'], json['url'], json['description'], json['date'])
             db.session.add(listing)
             db.session.commit()
         except Exception, e:
