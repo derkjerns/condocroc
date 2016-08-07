@@ -40,7 +40,7 @@ def http_error_handler(e):
 
 @app.route("/")
 def index():
-    listings = Listing.query.all()
+    listings = Listing.query.order_by(Listing.id.desc()).all()
     return render_template('index.html', listings=listings)
 
 
