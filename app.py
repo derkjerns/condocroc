@@ -1,8 +1,7 @@
 import os
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
-
-print(os.environ['APP_SETTINGS'])
+from werkzeug.exceptions import abort
 
 # initialization
 app = Flask(__name__)
@@ -12,18 +11,42 @@ db = SQLAlchemy(app)
 
 from models import *
 
+
 # controllers
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
+@app.errorhandler(405)
+@app.errorhandler(401)
+@app.errorhandler(500)
+def http_error_handler(e):
+    return render_template('error.html', error=e), e.code
+
+
 @app.route("/")
 def index():
-    return render_template('index.html')
+    listings = Listing.query.all()
+    return render_template('index.html', listings=listings)
+
+
+@app.route("/cg", methods=['POST'])
+def addCraigslistListing():
+    if request.method == 'POST':
+        try:
+            json = request.get_json()
+            listing = Listing(json['title'],json['url'],json['description'],json['date'])
+            db.session.add(listing)
+            db.session.commit()
+        except Exception, e:
+            abort(500)
+    return render_template('success.html')
+
 
 # launch
 if __name__ == "__main__":
