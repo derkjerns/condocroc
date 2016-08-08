@@ -7,10 +7,16 @@ import time
 import feedparser
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+from twilio.rest import TwilioRestClient
 from models import *
 
+account_sid = "ACf35e649699bce65387ceadef2a328ebd"
+auth_token = "14b49654235ea385f9453cf6a1a7206c"
+client = TwilioRestClient(account_sid, auth_token)
+
+
 def fetch_new_cg_listings():
-    cgfeed = feedparser.parse('https://toronto.craigslist.ca/search/tor/apa?bedrooms=2&format=rss&max_price=2600')
+    cgfeed = feedparser.parse('https://toronto.craigslist.ca/search/tor/apa?bedrooms=1&format=rss&maxSqft=900&max_price=2600&min_price=2000')
     notify = False
     for entry in cgfeed.entries:
         existing = Listing.query.filter_by(url=entry.link).first()
@@ -23,13 +29,15 @@ def fetch_new_cg_listings():
     if notify:
         notify_me()
 
+
 def notify_me():
-    print ("text 416 571 0806")
+    client.messages.create(to="+14165710806", from_="+16475034607",
+                           body="New listings! https://condocroc.herokuapp.com")
 
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
-    scheduler.add_job(fetch_new_cg_listings, 'interval', minutes=30)
+    scheduler.add_job(fetch_new_cg_listings, 'interval', minutes=60)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
     fetch_new_cg_listings()
