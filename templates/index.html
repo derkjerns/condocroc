@@ -4,9 +4,9 @@
 <div>
   {% for listing in listings %}
       <div class="listing">
-          <div class="listing-title">{{ listing.title }}</div>
-          <div class="listing-url"><a href="{{ listing.url }}">{{ listing.url }}</a></div>
-          <div class="listing-description">{{ listing.description }}</div>
+          <div class="listing-title">{{ listing.title|safe }}</div>
+          <div class="listing-url"><a href="{{ listing.url|safe }}">{{ listing.url }}</a></div>
+          <div class="listing-description">{{ listing.description|safe }}</div>
           <div class="listing-date">{{ listing.date }}</div>
       </div>
   {% else %}

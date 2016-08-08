@@ -4,6 +4,10 @@
     padding: 14px;
 }
 
+.listing:hover{
+    background-color: whitesmoke;
+}
+
 .listing-title{
     font-size: 24px;
     font-weight: bold;
