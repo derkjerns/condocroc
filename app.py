@@ -61,7 +61,7 @@ def parsecg():
     images = []
     for a,b in zip(mains, thumbs):
         images.append([a,b])
-    return render_template('cgpage.html', title=title, price=price, description=description, images=images)
+    return render_template('cgpage.html', title=title, price=price, description=description, images=images, url=url)
 
 # launch
 if __name__ == "__main__":

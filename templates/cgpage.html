@@ -20,6 +20,11 @@
         font-size: 18px;
         padding-bottom: 14px;
     }
+
+    .url {
+        font-size: 14px;
+        padding-top: 14px;
+    }
 </style>
 <script>
     function load_home() {
@@ -71,7 +76,7 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-<script src="js/bootstrap-image-gallery.min.js"></script>
+<script src="/static/js/bootstrap-image-gallery.min.js"></script>
 
 <div id="links">
     {% for image in images %}
@@ -80,3 +85,5 @@
         </a>
     {% endfor %}
 </div>
+
+<div class="url"><a href="{{ url }}">{{ url }}</a></div>
