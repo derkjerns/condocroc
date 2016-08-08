@@ -1,8 +1,9 @@
 import os
 from flask import Flask, render_template, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.exceptions import abort
 import datetime as datetime
+from lxml import html
+import requests
 
 # initialization
 app = Flask(__name__)
@@ -40,22 +41,27 @@ def http_error_handler(e):
 
 @app.route("/")
 def index():
+    return render_template('index.html')
+
+@app.route("/listings")
+def listings():
     listings = Listing.query.order_by(Listing.id.desc()).all()
-    return render_template('index.html', listings=listings)
+    return render_template('listings.html', listings=listings)
 
-
-@app.route("/cg", methods=['POST'])
-def addCraigslistListing():
-    if request.method == 'POST':
-        try:
-            json = request.get_json()
-            listing = Listing(json['title'], json['url'], json['description'], json['date'])
-            db.session.add(listing)
-            db.session.commit()
-        except Exception, e:
-            abort(500)
-    return render_template('success.html')
-
+@app.route("/parsecg")
+def parsecg():
+    url = request.args.get('url')
+    page = requests.get(url)
+    tree = html.fromstring(page.content)
+    title = tree.xpath('//span[@id="titletextonly"]/text()')[0]
+    price = tree.xpath('//span[@class="price"]/text()')[0]
+    description = tree.xpath('//section[@id="postingbody"]/text()')[0]
+    mains = tree.xpath('//a[@class="thumb"]/@href')
+    thumbs = tree.xpath('//a[@class="thumb"]/img/@src')
+    images = []
+    for a,b in zip(mains, thumbs):
+        images.append([a,b])
+    return render_template('cgpage.html', title=title, price=price, description=description, images=images)
 
 # launch
 if __name__ == "__main__":

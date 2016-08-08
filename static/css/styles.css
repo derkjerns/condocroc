@@ -13,20 +13,6 @@
     font-weight: bold;
 }
 
-.listing-url a{
+.listing-url{
     color: forestgreen;
-    text-decoration: none;
-}
-
-.listing-url a:hover{
-    color: forestgreen;
-    text-decoration: none;
-}
-
-.listing-description{
-
-}
-
-.listing-date{
-
 }

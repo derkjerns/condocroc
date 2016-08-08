@@ -1,0 +1,17 @@
+<script>
+    function load_cg(url) {
+        $('.content').load("parsecg?url=" + encodeURIComponent(url))
+    }
+</script>
+<div>
+    {% for listing in listings %}
+        <div class="listing">
+            <div class="listing-title">{{ listing.title|safe }}</div>
+            <div class="listing-url" onclick="load_cg('{{ listing.url }}')">{{ listing.url|safe }}</div>
+            <div class="listing-description">{{ listing.description|safe }}</div>
+            <div class="listing-date">{{ listing.date }}</div>
+        </div>
+    {% else %}
+        <div><em>No listings here so far</em></div>
+    {% endfor %}
+</div>

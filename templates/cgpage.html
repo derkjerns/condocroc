@@ -1,0 +1,82 @@
+<style>
+    .back-button {
+        padding-bottom: 14px;
+    }
+
+    .title {
+        font-size: 22px;
+        padding-bottom: 14px;
+        font-weight: bold;
+    }
+
+    .price {
+        font-size: 18px;
+        color: forestgreen;
+        padding-bottom: 14px;
+        font-weight: bolder;
+    }
+
+    .description {
+        font-size: 18px;
+        padding-bottom: 14px;
+    }
+</style>
+<script>
+    function load_home() {
+        $('.content').load("/listings")
+    }
+</script>
+<div class="back-button">
+    <button type="button" class="btn btn-default btn-lg" onclick="load_home()">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back
+    </button>
+</div>
+<div class="title">{{ title }}</div>
+<div class="price">{{ price }}</div>
+<div class="description">{{ description }}</div>
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<script src="js/bootstrap-image-gallery.min.js"></script>
+
+<div id="links">
+    {% for image in images %}
+        <a href="{{ image[0] }}" data-gallery>
+            <img src="{{ image[1] }}">
+        </a>
+    {% endfor %}
+</div>

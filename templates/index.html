@@ -1,16 +1,11 @@
 {% extends "base.html" %}
 {% block title %}CondoCroc{% endblock %}
 {% block content %}
-<div>
-  {% for listing in listings %}
-      <div class="listing">
-          <div class="listing-title">{{ listing.title|safe }}</div>
-          <div class="listing-url"><a href="{{ listing.url|safe }}">{{ listing.url }}</a></div>
-          <div class="listing-description">{{ listing.description|safe }}</div>
-          <div class="listing-date">{{ listing.date }}</div>
-      </div>
-  {% else %}
-    <div><em>No listings here so far</em></div>
-  {% endfor %}
-</div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.content').load('/listings')
+        });
+    </script>
+    <div style="padding: 30px; text-align: center"><img src="../static/img/loading.gif" width="80px"></div>
 {% endblock %}
