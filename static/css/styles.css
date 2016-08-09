@@ -15,4 +15,5 @@
 
 .listing-url{
     color: forestgreen;
+    word-wrap: break-word;
 }
