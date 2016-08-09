@@ -45,12 +45,14 @@ def index():
 
 @app.route("/listings")
 def listings():
+    index = request.args.get('index')
     listings = Listing.query.order_by(Listing.id.desc()).all()
-    return render_template('listings.html', listings=listings)
+    return render_template('listings.html', listings=listings, index=index)
 
 @app.route("/parsecg")
 def parsecg():
     url = request.args.get('url')
+    index = request.args.get('index')
     page = requests.get(url)
     tree = html.fromstring(page.content)
     title = tree.xpath('//span[@id="titletextonly"]/text()')[0]
@@ -61,7 +63,7 @@ def parsecg():
     images = []
     for a,b in zip(mains, thumbs):
         images.append([a,b])
-    return render_template('cgpage.html', title=title, price=price, description=description, images=images, url=url)
+    return render_template('cgpage.html', title=title, price=price, description=description, images=images, url=url, index=index)
 
 # launch
 if __name__ == "__main__":

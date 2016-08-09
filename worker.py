@@ -14,21 +14,26 @@ account_sid = "ACf35e649699bce65387ceadef2a328ebd"
 auth_token = "14b49654235ea385f9453cf6a1a7206c"
 client = TwilioRestClient(account_sid, auth_token)
 
+neg_word_list = ['3bd', '3 bd', '3bed', '3 bed', '3br', '3 br',
+                 'harbord', 'bloor', 'dupont', 'davenport', 'st. clair',
+                 'avenue', 'church', 'jarvis', 'sherbourne', 'broadview',
+                 'parliament', 'yonge', 'eglinton', 'roncesvalles',
+                 'lawrence', 'rosedale', 'sheppard']
 
 def fetch_new_cg_listings():
-    cgfeed = feedparser.parse('https://toronto.craigslist.ca/search/tor/apa?bedrooms=1&format=rss&maxSqft=900&max_price=2600&min_price=2000')
+    cgfeed = feedparser.parse('https://toronto.craigslist.ca/search/tor/apa?bedrooms=1&format=rss&hasPic=1&max_price=2600&minSqft=900&min_price=2000')
     notify = False
     for entry in cgfeed.entries:
-        existing = Listing.query.filter_by(url=entry.link).first()
-        if existing is None:
-            notify = True
-            date = datetime.strptime(entry.published[:-6], "%Y-%m-%dT%H:%M:%S").strftime("%B %d, %Y")
-            listing = Listing(entry.title, entry.link, entry.summary, date)
-            db.session.add(listing)
+        if not any(word in entry.title.lower() for word in neg_word_list):
+            existing = Listing.query.filter_by(url=entry.link).first()
+            if existing is None:
+                notify = True
+                date = datetime.strptime(entry.published[:-6], "%Y-%m-%dT%H:%M:%S").strftime("%B %d, %Y")
+                listing = Listing(entry.title, entry.link, entry.summary, date)
+                db.session.add(listing)
     db.session.commit()
     if notify:
         notify_me()
-
 
 def notify_me():
     client.messages.create(to="+14165710806", from_="+16475034607",

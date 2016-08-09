@@ -17,3 +17,11 @@
     color: forestgreen;
     word-wrap: break-word;
 }
+
+.navbar-nav li a {
+    margin-top: 40px;
+}
+
+.navbar-brand{
+    padding-right: 100px;
+}

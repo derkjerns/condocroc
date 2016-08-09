@@ -1,13 +1,21 @@
 <script>
-    function load_cg(url) {
-        $('.content').load("parsecg?url=" + encodeURIComponent(url))
+    function load_cg(url, index) {
+        $('.content').load("parsecg?url=" + encodeURIComponent(url) + "&index=" + index)
     }
+
+    {% if index is not none %}
+    $(document).ready(function () {
+        $("#{{ index }}").get(0).scrollIntoView()
+    });
+    {% endif %}
+
 </script>
 <div>
     {% for listing in listings %}
-        <div class="listing">
+        <div id="{{ loop.index }}" class="listing">
             <div class="listing-title">{{ listing.title|safe }}</div>
-            <div class="listing-url" onclick="load_cg('{{ listing.url }}')">{{ listing.url|safe }}</div>
+            <div class="listing-url"
+                 onclick="load_cg('{{ listing.url }}', '{{ loop.index }}')">{{ listing.url|safe }}</div>
             <div class="listing-description">{{ listing.description|safe }}</div>
             <div class="listing-date">{{ listing.date }}</div>
         </div>
